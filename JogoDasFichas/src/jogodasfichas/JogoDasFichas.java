@@ -5,7 +5,7 @@ import java.util.Collections;
 
 public class JogoDasFichas {
 
-    static ArrayList<Vertice> estadosGerados = new ArrayList();
+    static ArrayList<ArrayList<Integer>> estadosGerados = new ArrayList();
 
     public static boolean ehSolucao(ArrayList l, ArrayList solucao) {
         ArrayList<Integer> lCopia = new ArrayList();
@@ -21,18 +21,18 @@ public class JogoDasFichas {
         return lCopia.equals(solucaoCopia);
     }
 
-    public static boolean verificaArvore(Vertice l) {
-//        //Vertice aux = l.getPai();
-        Vertice aux = l;
-//        while (aux.getPai() != null) {
-//            if (aux.getEstado() == l.getEstado()) {
-//                return false;
-//            }
-//            aux = aux.getPai();
-//        }
-//        return true;
+    public static void addEstadoGerados(Vertice atual) {
+        ArrayList<Integer> aux = new ArrayList();
+        for (int i = 0; i < atual.getEstado().size(); i++) {
+            aux.add(atual.getEstado().get(i));
+        }
+        estadosGerados.add(aux);
+    }
+
+    public static boolean verificaArvore(Vertice atual) {
+
         for (int i = 0; i < estadosGerados.size(); i++) {
-            if (aux == estadosGerados.get(i)) {
+            if (estadosGerados.get(i).equals(atual.getEstado())) {
                 return false;
             }
         }
@@ -60,7 +60,7 @@ public class JogoDasFichas {
         return false;
     }
 
-   /* public static void irrevogavel(ArrayList inicio, ArrayList solucao, int salto) {
+    /* public static void irrevogavel(ArrayList inicio, ArrayList solucao, int salto) {
 
         Vertice raiz = new Vertice(null, inicio);
 
@@ -89,35 +89,63 @@ public class JogoDasFichas {
             System.out.println("sucesso");
         }
     }*/
-
     public static void backtraking(ArrayList inicio, ArrayList solucao, int salto) {
-        
+
         Vertice raiz = new Vertice(null, inicio);
-        
+
+        addEstadoGerados(raiz);
+
         ArrayList<Integer> S = inicio;
-        ArrayList<Integer> N = raiz.getEstado();
+
+        ArrayList<Integer> N;// = raiz.getEstado();
+
         boolean fracasso = false, sucesso = false;
+
         Vertice aux = raiz;
-        while (fracasso != true || sucesso != true) {
-            if (existeRegra(N, salto, aux))  { //R(N) != VAZIO
-                //N = regra;
+
+        while (fracasso != true && sucesso != true) {
+
+            imprimeGerados();
+
+            N = aux.getEstado();
+
+            if (existeRegra(N, salto, aux)) { //R(N) != VAZIO
+
+                addEstadoGerados(aux);
+
                 Vertice aux2 = new Vertice(aux, N);
+
                 aux.addFilho(aux2);
+
                 if (ehSolucao(N, solucao)) {
+
                     sucesso = true;
+
                 }
+
                 aux = aux2;
+
             } else {
+
                 if (N == S) {
+
                     fracasso = true;
+
                 } else {
+
                     aux = aux.getPai();
+
                 }
+
             }
+
         }
+        
+        System.out.println(sucesso);
+
     }
 
-    public static void buscaLargura(Vertice v, ArrayList solucao) {
+    /*  public static void buscaLargura(Vertice v, ArrayList solucao) {
         //abertos = Cria uma fila com estados abertos
         Vertice S = v;
         Vertice N = v;
@@ -185,12 +213,18 @@ public class JogoDasFichas {
                 }
             }
         }
+    }*/
+    public static void imprimeGerados() {
+        System.out.println("Gerados: " + estadosGerados.size());
+        for (int i = 0; i < estadosGerados.size(); i++) {
+            System.out.println(estadosGerados.get(i));
+        }
     }
 
     public static void main(String[] args) {
-        // TODO code application logic here
-        // System.out.println("Hello");
+
         ArrayList<Integer> I = new ArrayList();
+
         ArrayList<Integer> S = new ArrayList();
 
         I.add(2);
@@ -199,19 +233,15 @@ public class JogoDasFichas {
         I.add(2);
         I.add(1);
 
-        S.add(1);
-        S.add(1);
+        S.add(2);
+        S.add(2);
         S.add(0);
-        S.add(2);
-        S.add(2);
+        S.add(1);
+        S.add(1);
 
-        int salto = 1;
+        int salto = 2;
 
-        //irrevogavel(I, S, salto);
         backtraking(I, S, salto);
 
-        for (int i = 0; i < estadosGerados.size(); i++) {
-            System.out.println(estadosGerados.get(i).getEstado());
-        }
     }
 }
