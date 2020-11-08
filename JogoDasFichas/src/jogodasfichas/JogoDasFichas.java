@@ -7,6 +7,18 @@ public class JogoDasFichas {
 
     static ArrayList<ArrayList<Integer>> estadosGerados = new ArrayList();
 
+    public static void imprimeCaminho(Vertice folha) {
+        ArrayList<ArrayList<Integer>> caminho = new ArrayList();
+        while (folha != null) {
+            caminho.add(folha.getEstado());
+            folha = folha.getPai();
+        }
+        
+        for(int i = caminho.size()-1 ; i>-1;i--){
+            System.out.println(caminho.get(i));
+        }
+    }
+
     public static boolean ehSolucao(ArrayList l, ArrayList solucao) {
         ArrayList<Integer> lCopia = new ArrayList();
         ArrayList<Integer> aux = l;
@@ -105,7 +117,7 @@ public class JogoDasFichas {
 
         while (fracasso != true && sucesso != true) {
 
-            imprimeGerados();
+            //imprimeGerados();
 
             N = aux.getEstado();
 
@@ -140,9 +152,11 @@ public class JogoDasFichas {
             }
 
         }
-        
-        System.out.println(sucesso);
 
+        System.out.println("Sucesso: " + sucesso);
+        System.out.println("Fracasso: " + fracasso);
+        System.out.println(inicio);
+        imprimeCaminho(aux);
     }
 
     /*  public static void buscaLargura(Vertice v, ArrayList solucao) {
@@ -227,8 +241,8 @@ public class JogoDasFichas {
 
         ArrayList<Integer> S = new ArrayList();
 
-        I.add(2);
         I.add(1);
+        I.add(2);
         I.add(0);
         I.add(2);
         I.add(1);
