@@ -6,8 +6,6 @@ estadosGerados = []
 '-----------------------------------------------------------------------------'
 
 "Gera 2 vetores de fichas e embaralha"
-
-
 def criaVetor(tamanho):
 
     import random
@@ -43,8 +41,6 @@ def criaVetor(tamanho):
 
 
 "Gera 2 vetores de fichas sequenciais. Ex.: 11-22 22-11"
-
-
 def criaVetorSeq(tamanho):
 
     l1 = []
@@ -73,8 +69,6 @@ def criaVetorSeq(tamanho):
 
 
 "Verifica se o vetor é igual ao objetivo desconsiderando o 'espaço' vazio - retorna um conjunto de soluções"
-
-
 def ehSolucao(atual, solucao):
 
     auxAtual = atual.copy()
@@ -95,8 +89,6 @@ def ehSolucao(atual, solucao):
 
 
 "Verifica se há regra aplicável"
-
-
 def regra(lista, salto):
 
     aux = lista.copy()
@@ -118,6 +110,27 @@ def regra(lista, salto):
 
     return -1
 
+
+"Heurística - Número de fichas fora do lugar"
+def h(no, solucao):
+
+    N = no.getEstado().copy()
+
+    sol = solucao.copy()
+
+    N.remove(0)
+
+    sol.remove(0)
+
+    pecasFora = 0
+
+    for i in range(len(N)):
+
+        if(N[i] != sol[i]):
+
+            pecasFora += 1
+
+    return pecasFora
 
 '-----------------------------------------------------------------------------'
 
@@ -422,24 +435,3 @@ def buscaGulosa(inicio, solucao, salto):
         print("Fracasso!")
 
     estadosGerados.clear()
-
-
-def h(no, solucao):  # numero de fichas fora do lugar
-
-    N = no.getEstado().copy()
-
-    sol = solucao.copy()
-
-    N.remove(0)
-
-    sol.remove(0)
-
-    pecasFora = 0
-
-    for i in range(len(N)):
-
-        if(N[i] != sol[i]):
-
-            pecasFora += 1
-
-    return pecasFora
