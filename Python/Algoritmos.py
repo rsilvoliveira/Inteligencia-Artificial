@@ -2,7 +2,7 @@ import Grafo as g
 
 "Guarda todos os estados gerados pelo algoritmo"
 estadosGerados = []
-
+ramificacao = []
 '-----------------------------------------------------------------------------'
 
 "Gera 2 vetores de fichas e embaralha"
@@ -132,6 +132,49 @@ def h(no, solucao):
 
     return pecasFora
 
+
+def ramificacaoMediaR(raiz):
+        
+    
+    if raiz.tamanhoFilhos() != 0:
+        
+        a = []
+        
+        ramificacao.append(raiz.tamanhoFilhos())
+        
+        for i in range(raiz.tamanhoFilhos()):
+            
+           a.append(ramificacaoMediaR(raiz.getFilho(i)))
+
+"Retorna a quantidade média de filhos da árvore"        
+def  ramificacaoMedia(raiz):
+    
+    ramificacaoMediaR(raiz)
+    
+    r = 0
+    
+    for i in range(len(ramificacao)):
+        
+        r+=ramificacao[i]
+    
+    r = r/len(ramificacao)
+    
+    return r
+
+
+def altura(raiz):
+    
+    if raiz.tamanhoFilhos() == 0:
+    
+        return 0
+    
+    a = []
+    
+    for i in range(raiz.tamanhoFilhos()):
+        
+       a.append(altura(raiz.getFilho(i)))
+    
+    return max(a) + 1
 '-----------------------------------------------------------------------------'
 
 
@@ -434,4 +477,185 @@ def buscaGulosa(inicio, solucao, salto):
 
         print("Fracasso!")
 
+    estadosGerados.clear()
+    
+def buscaA(inicio, solucao, salto):
+
+    raiz = g.Vertice(None, inicio.copy())
+
+    estadosGerados.append(raiz.getEstado())
+
+    abertos = []
+
+    fracasso = False
+
+    sucesso = False
+
+    f = h(raiz, solucao)
+
+    raiz.setHeuristica(f)
+
+    abertos.append(raiz)
+
+    fechados = []
+
+    while(fracasso != True and sucesso != True):
+
+        if(len(abertos) == 0):
+
+            fracasso = True
+
+        else:
+
+            j = abertos[0]
+
+            for i in range(len(abertos)):
+
+                if(abertos[i].getHeuristica() < j.getHeuristica()):
+
+                    j = abertos[i]
+
+            aux = j  # no com menor f
+
+            N = aux.getEstado().copy()
+
+            if(ehSolucao(N, solucao)):
+
+                sucesso = True
+
+            else:
+
+                while(regra(N, salto) != -1):
+
+                    r = regra(N, salto)
+
+                    u = N.copy()
+
+                    posVazio = u.index(0)
+
+                    u[r], u[posVazio] = u[posVazio], u[r]
+
+                    estadosGerados.append(u)
+
+                    aux2 = g.Vertice(aux, u)
+
+                    f = h(aux2, solucao)
+
+                    aux2.setHeuristica(f)
+
+                    aux.addFilho(aux2)
+
+                    abertos.append(aux2)
+
+                fechados.append(aux)
+
+                abertos.remove(aux)
+
+    if(sucesso):
+        
+        print("Sucesso!")
+        
+        while (aux != None):
+            
+            print(aux.getEstado())
+            
+            aux = aux.getPai()
+    
+    else:
+    
+        print("Fracasso!")
+    
+    estadosGerados.clear()
+    
+    
+def buscaIDA(inicio, solucao, salto):
+    
+    fracasso = False
+    
+    sucesso = False
+    
+    raiz = g.Vertice(None, inicio.copy())
+    
+    estadosGerados.append(raiz.getEstado())
+    
+    f = h(raiz, solucao)
+    
+    patamar = f
+    
+    patamar_old = -1
+    
+    descartados = []
+    
+    aux = raiz
+    
+    while(sucesso != True and fracasso != True):
+        
+        # print(patamar,patamar_old)
+        
+        N = aux.getEstado().copy()
+        
+        if(patamar == patamar_old):
+            
+            fracasso = True
+            
+        else:
+            
+            if(ehSolucao(N, solucao) and f <= patamar):
+                
+                sucesso = True
+                
+            else:
+                
+                if(f>patamar):
+                    
+                    descartados.append(f)
+                    
+                    aux = aux.getPai()
+
+                if(regra(N, salto)!=-1):
+                        
+                    r = regra(N, salto)
+                        
+                    u = N.copy()
+
+                    posVazio = u.index(0)
+
+                    u[r], u[posVazio] = u[posVazio], u[r]
+
+                    estadosGerados.append(u)
+
+                    aux2 = g.Vertice(aux, u)
+                        
+                    f = h(aux2,solucao)
+                        
+                    aux.addFilho(aux2)
+                        
+                    aux = aux2
+                        
+                else:
+                        
+                    if(N == inicio):
+                            
+                        patamar_old = patamar
+                            
+                        patamar = min(descartados) 
+                            
+                    else:
+                            
+                        aux = aux.getPai()
+                            
+    if(sucesso):
+        
+        print("Sucesso!")
+        
+        while (aux != None):
+            
+            print(aux.getEstado())
+            
+            aux = aux.getPai()
+    
+    else:
+    
+        print("Fracasso!")
+    
     estadosGerados.clear()

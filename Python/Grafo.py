@@ -24,6 +24,9 @@ class Vertice:
     def getFilho(self, i):
         return self.filhos[i]
 
+    def tamanhoFilhos(self):
+        return len(self.filhos)
+
     def setHeuristica(self, h):
         self.heuristica = h
 

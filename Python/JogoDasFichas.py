@@ -21,13 +21,17 @@ print()
 
 i = t.time()
 
-# a.backtrack(inicioSeq,solSeq,salto)
+# a.backtrack(inicioSeq,solucaoSeq,salto)
 
-# a.buscaLargura(inicioSeq, solSeq, salto)
+# a.buscaLargura(inicioSeq, solucaoSeq, salto)
 
-# a.buscaProfundidade(inicioSeq,solSeq,salto)
+# a.buscaProfundidade(inicioSeq,solucaoSeq,salto)
 
-a.buscaGulosa(inicioSeq, solucaoSeq, salto)
+# a.buscaGulosa(inicioSeq, solcaoSeq, salto)
+
+# a.buscaA(inicioSeq, solucaoSeq, salto)
+
+a.buscaIDA(inicioSeq, solucaoSeq, salto)
 "Fiz baseado no A* do slide, mas agr n sei se eh o A* ou o guloso"
 "Esse eh o mais rápido - dá pra colocar um tamanho muito alto, desde que os saltos sejam bem altos também"
 "fiz um teste com tamanho 51 e salto 40, demorou 40s"
