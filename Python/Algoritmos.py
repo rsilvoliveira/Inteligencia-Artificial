@@ -161,7 +161,7 @@ def  ramificacaoMedia(raiz):
     
     return r
 
-
+"Retorna a altura/profundidade máxima da árvore"
 def altura(raiz):
     
     if raiz.tamanhoFilhos() == 0:
@@ -175,6 +175,37 @@ def altura(raiz):
        a.append(altura(raiz.getFilho(i)))
     
     return max(a) + 1
+
+
+def imprimeSolucao(raiz,aux):
+
+    print("Sucesso!")
+        
+    print()
+        
+    print("Ramificação Média:",ramificacaoMedia(raiz))
+
+    print("Altura:",altura(raiz))
+        
+    print()
+        
+    print("Caminho:")
+
+    print()
+
+    caminho = []
+
+    while (aux != None):
+
+        caminho.append(aux.getEstado())
+
+        aux = aux.getPai()
+            
+    caminho = caminho[::-1]
+        
+    for i in range(len(caminho)):
+            
+        print(caminho[i])
 '-----------------------------------------------------------------------------'
 
 
@@ -228,13 +259,7 @@ def backtrack(inicio, solucao, salto):
 
     if(sucesso):
 
-        print("Sucesso!")
-
-        while (aux != None):
-
-            print(aux.getEstado())
-
-            aux = aux.getPai()
+        imprimeSolucao(raiz,aux)
 
     else:
 
@@ -301,13 +326,7 @@ def buscaLargura(inicio, solucao, salto):
 
     if(sucesso):
 
-        print("Sucesso!")
-
-        while (aux != None):
-
-            print(aux.getEstado())
-
-            aux = aux.getPai()
+        imprimeSolucao(raiz,aux)
 
     else:
 
@@ -331,8 +350,6 @@ def buscaProfundidade(inicio, solucao, salto):
     fechados = []
 
     estadosGerados.append(raiz.getEstado())
-
-    # aux = abertos[0]
 
     while(fracasso != True and sucesso != True):
 
@@ -376,13 +393,7 @@ def buscaProfundidade(inicio, solucao, salto):
 
     if(sucesso):
 
-        print("Sucesso!")
-
-        while (aux != None):
-
-            print(aux.getEstado())
-
-            aux = aux.getPai()
+        imprimeSolucao(raiz,aux)
 
     else:
 
@@ -403,13 +414,11 @@ def buscaGulosa(inicio, solucao, salto):
 
     sucesso = False
 
-    f = h(raiz, solucao)
-
-    raiz.setHeuristica(f)
-
-    abertos.append(raiz)
-
     fechados = []
+    
+    aux = raiz 
+    
+    abertos.append(aux)
 
     while(fracasso != True and sucesso != True):
 
@@ -418,17 +427,9 @@ def buscaGulosa(inicio, solucao, salto):
             fracasso = True
 
         else:
-
-            j = abertos[0]
-
-            for i in range(len(abertos)):
-
-                if(abertos[i].getHeuristica() < j.getHeuristica()):
-
-                    j = abertos[i]
-
-            aux = j  # no com menor f
-
+           
+            aux = abertos[0]
+           
             N = aux.getEstado().copy()
 
             if(ehSolucao(N, solucao)):
@@ -451,33 +452,24 @@ def buscaGulosa(inicio, solucao, salto):
 
                     aux2 = g.Vertice(aux, u)
 
-                    f = h(aux2, solucao)
-
-                    aux2.setHeuristica(f)
-
                     aux.addFilho(aux2)
 
                     abertos.append(aux2)
-
+                    
                 fechados.append(aux)
 
                 abertos.remove(aux)
 
     if(sucesso):
 
-        print("Sucesso!")
-
-        while (aux != None):
-
-            print(aux.getEstado())
-
-            aux = aux.getPai()
-
+        imprimeSolucao(raiz,aux)
+    
     else:
-
+    
         print("Fracasso!")
-
+    
     estadosGerados.clear()
+
     
 def buscaA(inicio, solucao, salto):
 
@@ -552,14 +544,8 @@ def buscaA(inicio, solucao, salto):
                 abertos.remove(aux)
 
     if(sucesso):
-        
-        print("Sucesso!")
-        
-        while (aux != None):
-            
-            print(aux.getEstado())
-            
-            aux = aux.getPai()
+
+        imprimeSolucao(raiz,aux)
     
     else:
     
@@ -645,14 +631,8 @@ def buscaIDA(inicio, solucao, salto):
                         aux = aux.getPai()
                             
     if(sucesso):
-        
-        print("Sucesso!")
-        
-        while (aux != None):
-            
-            print(aux.getEstado())
-            
-            aux = aux.getPai()
+
+        imprimeSolucao(raiz,aux)
     
     else:
     
