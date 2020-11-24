@@ -1,7 +1,7 @@
 import Algoritmos as a
 import time as t
 
-tamanho = 5
+tamanho = 15
 
 salto = 2
 
@@ -27,6 +27,8 @@ a.backtrack(inicioSeq,solucaoSeq,salto)
 
 # a.buscaProfundidade(inicioSeq,solucaoSeq,salto)
 
+# a.buscaOrdenada(inicioSeq,solucaoSeq,salto)
+
 # a.buscaGulosa(inicioSeq, solucaoSeq, salto)
 
 # a.buscaA(inicioSeq, solucaoSeq, salto)
@@ -37,4 +39,4 @@ f = t.time()
 
 print()
 
-print("Total:", f-i, "s")
+print("Total",f-i,"s")

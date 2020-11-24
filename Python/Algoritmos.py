@@ -1,5 +1,6 @@
 import Grafo as g
 
+
 "Guarda todos os estados gerados pelo algoritmo"
 estadosGerados = []
 ramificacao = []
@@ -180,7 +181,7 @@ def altura(raiz):
 def imprimeSolucao(raiz,aux):
 
     print("Sucesso!")
-        
+         
     print()
         
     print("Ramificação Média:",ramificacaoMedia(raiz))
@@ -210,7 +211,7 @@ def imprimeSolucao(raiz,aux):
 
 
 def backtrack(inicio, solucao, salto):
-
+    
     raiz = g.Vertice(None, inicio.copy())
 
     estadosGerados.append(raiz.getEstado())
@@ -402,7 +403,7 @@ def buscaProfundidade(inicio, solucao, salto):
     estadosGerados.clear()
 
 
-def buscaGulosa(inicio, solucao, salto):
+def buscaOrdenada(inicio, solucao, salto):
 
     raiz = g.Vertice(None, inicio.copy())
 
@@ -414,11 +415,13 @@ def buscaGulosa(inicio, solucao, salto):
 
     sucesso = False
 
+    f = 1
+
+    raiz.setHeuristica(f)
+
+    abertos.append(raiz)
+
     fechados = []
-    
-    aux = raiz 
-    
-    abertos.append(aux)
 
     while(fracasso != True and sucesso != True):
 
@@ -427,9 +430,17 @@ def buscaGulosa(inicio, solucao, salto):
             fracasso = True
 
         else:
-           
-            aux = abertos[0]
-           
+
+            j = abertos[0]
+
+            for i in range(len(abertos)):
+
+                if(abertos[i].getHeuristica() < j.getHeuristica()):
+
+                    j = abertos[i]
+
+            aux = j  # no com menor f
+
             N = aux.getEstado().copy()
 
             if(ehSolucao(N, solucao)):
@@ -452,10 +463,14 @@ def buscaGulosa(inicio, solucao, salto):
 
                     aux2 = g.Vertice(aux, u)
 
+                    f = 1
+
+                    aux2.setHeuristica(f)
+
                     aux.addFilho(aux2)
 
                     abertos.append(aux2)
-                    
+
                 fechados.append(aux)
 
                 abertos.remove(aux)
@@ -470,8 +485,8 @@ def buscaGulosa(inicio, solucao, salto):
     
     estadosGerados.clear()
 
-    
-def buscaA(inicio, solucao, salto):
+
+def buscaGulosa(inicio, solucao, salto):
 
     raiz = g.Vertice(None, inicio.copy())
 
@@ -552,6 +567,89 @@ def buscaA(inicio, solucao, salto):
         print("Fracasso!")
     
     estadosGerados.clear()
+
+    
+def buscaA(inicio, solucao, salto):
+    
+    raiz = g.Vertice(None, inicio.copy())
+
+    estadosGerados.append(raiz.getEstado())
+
+    abertos = []
+
+    fracasso = False
+
+    sucesso = False
+
+    f = h(raiz, solucao) + 1 #Peso unitário
+
+    raiz.setHeuristica(f)
+
+    abertos.append(raiz)
+
+    fechados = []
+
+    while(fracasso != True and sucesso != True):
+
+        if(len(abertos) == 0):
+
+            fracasso = True
+
+        else:
+
+            j = abertos[0]
+
+            for i in range(len(abertos)):
+
+                if(abertos[i].getHeuristica() < j.getHeuristica()):
+
+                    j = abertos[i]
+
+            aux = j  # no com menor f
+
+            N = aux.getEstado().copy()
+
+            if(ehSolucao(N, solucao)):
+
+                sucesso = True
+
+            else:
+
+                while(regra(N, salto) != -1):
+
+                    r = regra(N, salto)
+
+                    u = N.copy()
+
+                    posVazio = u.index(0)
+
+                    u[r], u[posVazio] = u[posVazio], u[r]
+
+                    estadosGerados.append(u)
+
+                    aux2 = g.Vertice(aux, u)
+
+                    f = h(aux2, solucao) + 1 # Peso unitário
+
+                    aux2.setHeuristica(f)
+
+                    aux.addFilho(aux2)
+
+                    abertos.append(aux2)
+
+                fechados.append(aux)
+
+                abertos.remove(aux)
+    
+    if(sucesso):
+
+        imprimeSolucao(raiz,aux)
+    
+    else:
+    
+        print("Fracasso!")
+    
+    estadosGerados.clear()
     
     
 def buscaIDA(inicio, solucao, salto):
@@ -564,7 +662,7 @@ def buscaIDA(inicio, solucao, salto):
     
     estadosGerados.append(raiz.getEstado())
     
-    f = h(raiz, solucao)
+    f = h(raiz, solucao) + 1
     
     patamar = f
     
@@ -592,13 +690,13 @@ def buscaIDA(inicio, solucao, salto):
                 
             else:
                 
-                if(f>patamar):
+                if(f > patamar):
                     
                     descartados.append(f)
                     
                     aux = aux.getPai()
 
-                if(regra(N, salto)!=-1):
+                if(regra(N, salto)!=-1 ):
                         
                     r = regra(N, salto)
                         
@@ -612,8 +710,8 @@ def buscaIDA(inicio, solucao, salto):
 
                     aux2 = g.Vertice(aux, u)
                         
-                    f = h(aux2,solucao)
-                        
+                    f = h(aux2,solucao) + 1
+                    
                     aux.addFilho(aux2)
                         
                     aux = aux2
@@ -625,11 +723,15 @@ def buscaIDA(inicio, solucao, salto):
                         patamar_old = patamar
                             
                         patamar = min(descartados) 
+                        
+                        estadosGerados.clear()
+                        
+                        estadosGerados.append(inicio)
                             
                     else:
                             
                         aux = aux.getPai()
-                            
+                                         
     if(sucesso):
 
         imprimeSolucao(raiz,aux)
