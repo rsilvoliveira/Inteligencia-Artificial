@@ -1,7 +1,7 @@
 import Algoritmos as a
 import time as t
 
-tamanho = 15
+tamanho = 5
 
 salto = 2
 

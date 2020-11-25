@@ -134,19 +134,6 @@ def h(no, solucao):
     return pecasFora
 
 
-def ramificacaoMediaR(raiz):
-        
-    
-    if raiz.tamanhoFilhos() != 0:
-        
-        a = []
-        
-        ramificacao.append(raiz.tamanhoFilhos())
-        
-        for i in range(raiz.tamanhoFilhos()):
-            
-           a.append(ramificacaoMediaR(raiz.getFilho(i)))
-
 "Retorna a quantidade média de filhos da árvore"        
 def  ramificacaoMedia(raiz):
     
@@ -161,6 +148,19 @@ def  ramificacaoMedia(raiz):
     r = r/len(ramificacao)
     
     return r
+
+def ramificacaoMediaR(raiz):
+    
+    if raiz.tamanhoFilhos() != 0:
+        
+        a = []
+        
+        ramificacao.append(raiz.tamanhoFilhos())
+        
+        for i in range(raiz.tamanhoFilhos()):
+            
+           a.append(ramificacaoMediaR(raiz.getFilho(i)))
+
 
 "Retorna a altura/profundidade máxima da árvore"
 def altura(raiz):
@@ -207,6 +207,8 @@ def imprimeSolucao(raiz,aux):
     for i in range(len(caminho)):
             
         print(caminho[i])
+
+
 '-----------------------------------------------------------------------------'
 
 
@@ -228,7 +230,7 @@ def backtrack(inicio, solucao, salto):
 
         if(regra(N, salto) != -1):
 
-            r = regra(N, salto)
+            r = regra(N,salto)
 
             u = N.copy()
 
