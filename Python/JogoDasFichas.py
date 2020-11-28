@@ -21,9 +21,9 @@ print()
 
 i = t.time()
 
-a.backtrack(inicioSeq,solucaoSeq,salto)
+# a.backtrack(inicioSeq,solucaoSeq,salto)
 
-# a.buscaLargura(inicioSeq, solucaoSeq, salto)
+a.buscaLargura(inicioSeq, solucaoSeq, salto)
 
 # a.buscaProfundidade(inicioSeq,solucaoSeq,salto)
 

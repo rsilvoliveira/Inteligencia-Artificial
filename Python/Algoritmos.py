@@ -1,5 +1,5 @@
 import Grafo as g
-
+import time as t
 
 "Guarda todos os estados gerados pelo algoritmo"
 estadosGerados = []
@@ -177,8 +177,7 @@ def altura(raiz):
     
     return max(a) + 1
 
-
-def imprimeSolucao(raiz,aux):
+def imprimeSolucao(alg, raiz, aux, tempo, tamanho, salto, vizitados, expandidos):
 
     print("Sucesso!")
          
@@ -203,16 +202,55 @@ def imprimeSolucao(raiz,aux):
         aux = aux.getPai()
             
     caminho = caminho[::-1]
+
+    saida(alg, tamanho, salto, caminho, ramificacaoMedia(raiz), altura(raiz), vizitados, expandidos, tempo)
         
     for i in range(len(caminho)):
             
         print(caminho[i])
 
+def saida(alg,tamanho,salto, caminho, rMedia, altura, vizitados, expandidos, tempo):
+    
+    arquivo = open('Saida.txt', 'w')
+    
+    arquivo.write("Algoritmo: " + alg + "\n")
+    
+    arquivo.write("\n")
+    
+    arquivo.write("Tamanho: " + str(tamanho))
+    
+    arquivo.write("\n")
+    
+    arquivo.write("Salto:   " + str(salto))
+    
+    arquivo.write("\n\n")
+        
+    arquivo.write("Ramificação Média:   " + str(rMedia) + "\n")
+    
+    arquivo.write("Altura/Profundidade: " + str(altura) + "\n")
+    
+    arquivo.write("Nós vizitados:       " + str(vizitados) + "\n")
+    
+    arquivo.write("Nós expandidos:      " + str(expandidos) + "\n")
+    
+    arquivo.write("Tempo Execução:      " + str(tempo) + " s\n\n")
+    
+    arquivo.write("Solução: " + str(len(caminho)) + " passos.\n")
+    
+    arquivo.write("\n")
+    
+    for i in range(len(caminho)):
+        
+        arquivo.write(str(caminho[i]) + "\n")
+        
+    arquivo.close()
 
 '-----------------------------------------------------------------------------'
 
 
 def backtrack(inicio, solucao, salto):
+    
+    ini = t.time()
     
     raiz = g.Vertice(None, inicio.copy())
 
@@ -260,9 +298,13 @@ def backtrack(inicio, solucao, salto):
 
                 aux = aux.getPai()
 
+    fim = t.time()
+
+    tempo = fim - ini
+
     if(sucesso):
 
-        imprimeSolucao(raiz,aux)
+        imprimeSolucao('Backtrack',raiz,aux,tempo,len(inicio),salto,len(estadosGerados),len(estadosGerados))
 
     else:
 
@@ -272,6 +314,8 @@ def backtrack(inicio, solucao, salto):
 
 
 def buscaLargura(inicio, solucao, salto):
+
+    ini = t.time()    
 
     raiz = g.Vertice(None, inicio.copy())
 
@@ -327,18 +371,25 @@ def buscaLargura(inicio, solucao, salto):
 
                 abertos.pop(0)
 
+    fim = t.time()
+
+    tempo = fim - ini
+
     if(sucesso):
 
-        imprimeSolucao(raiz,aux)
+        imprimeSolucao('Busca em Largura',raiz,aux,tempo,len(inicio),salto,len(estadosGerados),len(fechados))
 
     else:
 
         print("Fracasso!")
 
     estadosGerados.clear()
+    
 
 
 def buscaProfundidade(inicio, solucao, salto):
+
+    ini = t.time()    
 
     raiz = g.Vertice(None, inicio.copy())
 
@@ -394,9 +445,13 @@ def buscaProfundidade(inicio, solucao, salto):
 
                 abertos.remove(aux)
 
+    fim = t.time()
+
+    tempo = fim - ini
+
     if(sucesso):
 
-        imprimeSolucao(raiz,aux)
+        imprimeSolucao('Busca em Profundidade',raiz,aux,tempo,len(inicio),salto,len(estadosGerados),len(fechados))
 
     else:
 
@@ -406,6 +461,8 @@ def buscaProfundidade(inicio, solucao, salto):
 
 
 def buscaOrdenada(inicio, solucao, salto):
+
+    ini = t.time()    
 
     raiz = g.Vertice(None, inicio.copy())
 
@@ -477,9 +534,13 @@ def buscaOrdenada(inicio, solucao, salto):
 
                 abertos.remove(aux)
 
+    fim = t.time()
+
+    tempo = fim - ini
+
     if(sucesso):
 
-        imprimeSolucao(raiz,aux)
+        imprimeSolucao('Busca Ordenada',raiz,aux,tempo,len(inicio),salto,len(estadosGerados),len(fechados))
     
     else:
     
@@ -489,6 +550,8 @@ def buscaOrdenada(inicio, solucao, salto):
 
 
 def buscaGulosa(inicio, solucao, salto):
+
+    ini = t.time()    
 
     raiz = g.Vertice(None, inicio.copy())
 
@@ -560,9 +623,13 @@ def buscaGulosa(inicio, solucao, salto):
 
                 abertos.remove(aux)
 
+    fim = t.time()
+
+    tempo = fim - ini
+
     if(sucesso):
 
-        imprimeSolucao(raiz,aux)
+        imprimeSolucao('Busca Gulosa',raiz,aux,tempo,len(inicio),salto,len(estadosGerados),len(fechados))
     
     else:
     
@@ -572,6 +639,8 @@ def buscaGulosa(inicio, solucao, salto):
 
     
 def buscaA(inicio, solucao, salto):
+    
+    ini = t.time()
     
     raiz = g.Vertice(None, inicio.copy())
 
@@ -643,9 +712,13 @@ def buscaA(inicio, solucao, salto):
 
                 abertos.remove(aux)
     
+    fim = t.time()
+
+    tempo = fim - ini
+    
     if(sucesso):
 
-        imprimeSolucao(raiz,aux)
+        imprimeSolucao('Busca A*',raiz,aux,tempo,len(inicio),salto,len(estadosGerados),len(fechados))
     
     else:
     
@@ -655,6 +728,8 @@ def buscaA(inicio, solucao, salto):
     
     
 def buscaIDA(inicio, solucao, salto):
+    
+    ini = t.time()
     
     fracasso = False
     
@@ -733,10 +808,14 @@ def buscaIDA(inicio, solucao, salto):
                     else:
                             
                         aux = aux.getPai()
-                                         
+                 
+    fim = t.time()
+
+    tempo = fim - ini
+                        
     if(sucesso):
 
-        imprimeSolucao(raiz,aux)
+        imprimeSolucao('Busca IDA*',raiz,aux,tempo,len(inicio),salto,len(estadosGerados),len(descartados))
     
     else:
     
