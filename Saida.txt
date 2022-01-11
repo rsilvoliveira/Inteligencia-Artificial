@@ -1,0 +1,21 @@
+Algoritmo: Busca em Largura
+
+Tamanho: 5
+Salto:   2
+
+Ramificação Média:   1.4444444444444444
+Altura/Profundidade: 7
+Nós vizitados:       27
+Nós expandidos:      25
+Tempo Execução:      0.0 s
+
+Solução: 8 passos.
+
+[1, 1, 0, 2, 2]
+[1, 0, 1, 2, 2]
+[1, 2, 1, 0, 2]
+[1, 2, 1, 2, 0]
+[1, 2, 0, 2, 1]
+[0, 2, 1, 2, 1]
+[2, 0, 1, 2, 1]
+[2, 2, 1, 0, 1]
